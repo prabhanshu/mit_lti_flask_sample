@@ -5,7 +5,7 @@ from flask_wtf import Form
 from wtforms import IntegerField, BooleanField
 from random import randint
 
-from pylti.flask import lti
+from pylti.flask import lti as lti_flask
 
 VERSION = '0.0.1'
 app = Flask(__name__)
@@ -34,7 +34,7 @@ def error(exception=None):
 
 
 @app.route('/is_up', methods=['GET'])
-def hello_world(lti=lti):
+def hello_world(lti):
     """ Indicate the app is working. Provided for debugging purposes.
 
     :param lti: the `lti` object from `pylti`
@@ -47,8 +47,8 @@ def hello_world(lti=lti):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET'])
 @app.route('/lti/', methods=['GET', 'POST'])
-@lti(request='initial', error=error, app=app)
-def index(lti=lti):
+@lti_flask(request='initial', error=error, app=app)
+def index(lti):
     """ initial access page to the lti provider.  This page provides
     authorization for the user.
 
@@ -59,8 +59,8 @@ def index(lti=lti):
 
 
 @app.route('/index_staff', methods=['GET', 'POST'])
-@lti(request='session', error=error, role='staff', app=app)
-def index_staff(lti=lti):
+@lti_flask(request='session', error=error, role='staff', app=app)
+def index_staff(lti):
     """ render the contents of the staff.html template
 
     :param lti: the `lti` object from `pylti`
@@ -70,8 +70,8 @@ def index_staff(lti=lti):
 
 
 @app.route('/add', methods=['GET'])
-@lti(request='session', error=error, app=app)
-def add_form(lti=lti):
+@lti_flask(request='session', error=error, app=app)
+def add_form(lti):
     """ initial access page for lti consumer
 
     :param lti: the `lti` object from `pylti`
@@ -84,8 +84,8 @@ def add_form(lti=lti):
 
 
 @app.route('/grade', methods=['POST'])
-@lti(request='session', error=error, app=app)
-def grade(lti=lti):
+@lti_flask(request='session', error=error, app=app)
+def grade(lti):
     """ post grade
 
     :param lti: the `lti` object from `pylti`
